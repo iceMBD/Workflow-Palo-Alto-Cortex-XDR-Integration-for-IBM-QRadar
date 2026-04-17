@@ -120,7 +120,7 @@ Log in to QRadar Console.
 To verify that the log sources are pulling events every cycle (e.g., every 2 minutes), monitor the qradar.log file from the console:
 
 ```console
-tail -f /var/log/qradar.log | grep -i CORTEX_DEBUG
+tail -f /var/log/qradar.log | grep CORTEX_DEBUG
 ```
 
 Expected Output:
