@@ -25,8 +25,11 @@ Hostname (e.g., api-yourcompany.xdr.us.paloaltonetworks.com)
 Edit the **cortexxdr_workflow.parameter.values.xml** file and populate it with your values:
 
 hostname: Place the hostname **without** https://.
+
 api_key_id: Your API Key ID.
+
 api_key: Your API Key.
+
 
 ### 2. Pre-Deployment Validation (CLI Testing)
 Before creating log sources in the UI, test the Workflow XML files via the QRadar CLI to ensure they are free of syntax errors and can successfully reach the API.
