@@ -6,6 +6,10 @@ https://docs-cortex.paloaltonetworks.com/r/Cortex-XDR-REST-API/Audit-Log
 
 https://docs-cortex.paloaltonetworks.com/r/Cortex-XDR-REST-API/Incident-Management
 
+Universal Cloud REST API protocol
+
+https://www.ibm.com/docs/en/qsip/7.4.0?topic=configuration-universal-cloud-rest-api-protocol
+
 
 ## Configuration & Installation Guide
 
