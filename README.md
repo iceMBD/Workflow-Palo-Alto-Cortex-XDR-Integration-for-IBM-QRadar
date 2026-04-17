@@ -18,7 +18,9 @@ https://docs-cortex.paloaltonetworks.com/r/Cortex-XDR-REST-API/Incident-Manageme
 
 
 
-Testing Workflows
+Testing Workflows:
+
 the command line is used to specify the workflow and workflow parameter values to load. The -w command is used to specify the myworkflow.XML workflow and the -wp command is used to specify the myworkflow.parameter.values.xml workflow parameter values.
+
 
 /opt/qradar/bin/test-workflow.sh -w myworkflow.xml -wp myworkflow.parameter.values.xml
