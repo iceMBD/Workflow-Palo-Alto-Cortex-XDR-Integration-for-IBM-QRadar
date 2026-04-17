@@ -90,6 +90,8 @@ Log in to QRadar Console.
 
 11- Click Finish and Deploy Changes.
 
+
+
 #### B. "Incidents & Alerts" Log Source
 Log in to QRadar Console.
 
