@@ -18,7 +18,7 @@ API Key ID (x-xdr-auth-id)
 Hostname (e.g., api-yourcompany.xdr.us.paloaltonetworks.com)
 
 #### Parameter Configuration
-Edit the **myworkflow.parameter.values.xml** file and populate it with your values:
+Edit the **cortexxdr_workflow.parameter.values.xml** file and populate it with your values:
 
 hostname: Place the hostname **without** https://.
 api_key_id: Your API Key ID.
@@ -31,7 +31,7 @@ Before creating log sources in the UI, test the Workflow XML files via the QRada
 The following command should pull Audit payloads without errors. Use grep to filter for the custom CORTEX_DEBUG tags:
 
 ```console
-/opt/qradar/bin/test-workflow.sh -w cortexxdr_audit.xml -wp myworkflow.parameter.values.xml | grep -i CORTEX_DEBUG
+/opt/qradar/bin/test-workflow.sh -w cortexxdr_workflow_audit.xml -wp cortexxdr_workflow.parameter.values.xml | grep -i CORTEX_DEBUG
 ```
 Expected Output:
 ```console
@@ -43,7 +43,7 @@ Expected Output:
 
 #### Testing Incidents and Alerts Workflow
 ```console
-/opt/qradar/bin/test-workflow.sh -w cortexxdr_incidents.xml -wp myworkflow.parameter.values.xml | grep -i CORTEX_DEBUG
+/opt/qradar/bin/test-workflow.sh -w cortexxdr_workflow_incidents_alerts.xml -wp cortexxdr_workflow.parameter.values.xml | grep -i CORTEX_DEBUG
 ```
 
 Expected Output:
@@ -54,19 +54,6 @@ Expected Output:
 [CORTEX_DEBUG] Incidents/Alerts Cycle Complete.
 ```
 
-#### Testing Incidents and Alerts Workflow
-
-```console
-/opt/qradar/bin/test-workflow.sh -w cortexxdr_incidents.xml -wp myworkflow.parameter.values.xml | grep -i CORTEX_DEBUG
-```
-
-Expected Output:
-```console
-[CORTEX_DEBUG] Starting Incidents/Alerts Cycle.
-[CORTEX_DEBUG] Incidents API Success. Found 0 incidents.
-[CORTEX_DEBUG] Alerts API Success. Found 3 alerts.
-[CORTEX_DEBUG] Incidents/Alerts Cycle Complete.
-```
 
 ### 3. Creating Log Sources in QRadar UI
 We will create two distinct log sources to manage different data streams.
@@ -88,7 +75,7 @@ Log in to QRadar Console.
 
 7- On the Configure the Log Source parameters page, configure the log source parameters and click Configure Protocol Parameters.
 
-8- On the Configure the protocol parameters page, configure the protocol-specific parameters (cortexxdr_workflow_audit.xml and myworkflow.parameter.values.xml).
+8- On the Configure the protocol parameters page, configure the protocol-specific parameters (cortexxdr_workflow_audit.xml and cortexxdr_workflow.parameter.values.xml).
 
 9- In the Test protocol parameters window, click Start Test.
 
@@ -113,7 +100,7 @@ Log in to QRadar Console.
 
 7- On the Configure the Log Source parameters page, configure the log source parameters and click Configure Protocol Parameters.
 
-8- On the Configure the protocol parameters page, configure the protocol-specific parameters (cortexxdr_workflow_incidents_Alerts.xml and myworkflow.parameter.values.xml).
+8- On the Configure the protocol parameters page, configure the protocol-specific parameters (cortexxdr_workflow_incidents_alerts.xml and cortexxdr_workflow.parameter.values.xml).
 
 9- In the Test protocol parameters window, click Start Test.
 
