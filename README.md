@@ -78,7 +78,7 @@ Log in to QRadar Console.
 
 5- On the Select a Protocol Type page, select "Universal Cloud REST API" and click Configure Log Source Parameters.
 
-6- **Log Source Identifier should be CortexXDR_Audit** (to change the name to something else one the workflow and look for it and change )
+6- **Log Source Identifier should be CortexXDR_Audit** (to change the name to something else, open the workflow file and look for it and change it and save the file)
 
 7- On the Configure the Log Source parameters page, configure the log source parameters and click Configure Protocol Parameters.
 
@@ -105,7 +105,7 @@ Log in to QRadar Console.
 
 5- On the Select a Protocol Type page, select "Universal Cloud REST API" and click Configure Log Source Parameters.
 
-6- **Log Source Identifier should be CortexXDR_Incidents_Alerts**   (to change the name to something else one the workflow and look for it and change )
+6- **Log Source Identifier should be CortexXDR_Incidents_Alerts**   (to change the name to something else, open the workflow file and look for it and change it and save the file )
 
 7- On the Configure the Log Source parameters page, configure the log source parameters and click Configure Protocol Parameters.
 
