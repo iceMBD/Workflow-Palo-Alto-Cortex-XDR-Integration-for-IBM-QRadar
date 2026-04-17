@@ -1,4 +1,4 @@
-# Workflow-Palo-Alto-Cortex-XDR-Integration-for-IBM-QRadar
+# Workflows Palo Alto Cortex XDR Integration for IBM QRadar
 This workflow can be used to configure a new Source Log of type Universal Cloud REST API protocol in order to ingest  Audit Log [Get Audit Management Log and 
 Get Audit Agent Report ] and Incident Management [Get all Incidents and  Get all Alerts].
 
