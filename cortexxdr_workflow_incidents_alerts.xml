@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Workflow name="CortexXDR_Incidents_Alerts" version="1.0" xmlns="http://qradar.ibm.com/UniversalCloudRESTAPI/Workflow/V2">
+    <Parameters>
+        <Parameter name="hostname" label="Cortex XDR Hostname" required="true" />
+        <Parameter name="api_key_id" label="API Key ID" required="true" />
+        <Parameter name="api_key" label="API Key" required="true" secret="true" />
+    </Parameters>
+
+    <Actions>
+        <Initialize path="/incident_marker" value="${time() - 3600000}" />
+        <Initialize path="/alert_marker" value="${time() - 3600000}" />
+        <Set path="/safe_end_time" value="${time() - 120000}" />
+
+        <Log type="INFO" message="[CORTEX_DEBUG] Starting Incidents/Alerts Cycle. End Window: ${/safe_end_time}" />
+
+        <Set path="/incident_body" value='{"request_data":{"filters":[{"field":"creation_time","operator":"gte","value":${/incident_marker}},{"field":"creation_time","operator":"lte","value":${/safe_end_time}}],"search_from":0,"search_to":100,"sort":{"field":"creation_time","keyword":"asc"}}}' />
+
+        <CallEndpoint url="https://${/hostname}/public_api/v1/incidents/get_incidents/" method="POST" savePath="/res_inc">
+            <RequestHeader name="x-xdr-auth-id" value="${/api_key_id}" />
+            <RequestHeader name="Authorization" value="${/api_key}" />
+            <RequestHeader name="Content-Type" value="application/json" />
+            <RequestBody type="application/json" encoding="UTF-8">${/incident_body}</RequestBody>
+        </CallEndpoint>
+
+        <If condition="/res_inc/status_code = 200">
+            <Set path="/inc_count" value="${count(/res_inc/body/reply/incidents)}" />
+            <Log type="INFO" message="[CORTEX_DEBUG] Incidents API Success. Found ${/inc_count} incidents." />
+            <If condition="/inc_count > 0">
+                <PostEvents path="/res_inc/body/reply/incidents" source="CortexXDR_Incidents_Alerts" />
+            </If>
+            <Set path="/incident_marker" value="${/safe_end_time}" />
+        </If>
+
+        <Set path="/alert_body" value='{"request_data":{"filters":[{"field":"creation_time","operator":"gte","value":${/alert_marker}},{"field":"creation_time","operator":"lte","value":${/safe_end_time}}],"search_from":0,"search_to":100,"sort":{"field":"creation_time","keyword":"asc"}}}' />
+
+        <CallEndpoint url="https://${/hostname}/public_api/v1/alerts/get_alerts/" method="POST" savePath="/res_alert">
+            <RequestHeader name="x-xdr-auth-id" value="${/api_key_id}" />
+            <RequestHeader name="Authorization" value="${/api_key}" />
+            <RequestHeader name="Content-Type" value="application/json" />
+            <RequestBody type="application/json" encoding="UTF-8">${/alert_body}</RequestBody>
+        </CallEndpoint>
+
+        <If condition="/res_alert/status_code = 200">
+            <Set path="/alert_count" value="${count(/res_alert/body/reply/alerts)}" />
+            <Log type="INFO" message="[CORTEX_DEBUG] Alerts API Success. Found ${/alert_count} alerts." />
+            <If condition="/alert_count > 0">
+                <PostEvents path="/res_alert/body/reply/alerts" source="CortexXDR_Incidents_Alerts" />
+            </If>
+            <Set path="/alert_marker" value="${/safe_end_time}" />
+        </If>
+
+        <Log type="INFO" message="[CORTEX_DEBUG] Incidents/Alerts Cycle Complete." />
+    </Actions>
+</Workflow>

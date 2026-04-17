@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Workflow name="CortexXDR" version="1.0" xmlns="http://qradar.ibm.com/UniversalCloudRESTAPI/Workflow/V2">
+    <Parameters>
+        <Parameter name="hostname" label="Cortex XDR Hostname" required="true" />
+        <Parameter name="api_key_id" label="API Key ID" required="true" />
+        <Parameter name="api_key" label="API Key" required="true" secret="true" />
+    </Parameters>
+
+    <Actions>
+        <Initialize path="/cortex_marker" value="${time() - 3600000}" />
+        <Set path="/safe_end_time" value="${time() - 120000}" />
+
+        <Log type="INFO" message="[CORTEX_DEBUG] Cycle Start. Bookmark: ${/cortex_marker} | End Window: ${/safe_end_time}" />
+
+        <Set path="/request_body" value='{"request_data":{"filters":[{"field":"timestamp","operator":"gte","value":${/cortex_marker}},{"field":"timestamp","operator":"lte","value":${/safe_end_time}}],"search_from":0,"search_to":100,"sort":{"field":"timestamp","keyword":"asc"}}}' />
+
+        <CallEndpoint url="https://${/hostname}/public_api/v1/audits/agents_reports" method="POST" savePath="/res_agent">
+            <RequestHeader name="x-xdr-auth-id" value="${/api_key_id}" />
+            <RequestHeader name="Authorization" value="${/api_key}" />
+            <RequestHeader name="Content-Type" value="application/json" />
+            <RequestBody type="application/json" encoding="UTF-8">${/request_body}</RequestBody>
+        </CallEndpoint>
+
+        <If condition="/res_agent/status_code = 200">
+            <Set path="/agent_count" value="${count(/res_agent/body/reply/data)}" />
+            <Log type="INFO" message="[CORTEX_DEBUG] Agent API Success. Found ${/agent_count} events." />
+            <If condition="/agent_count > 0">
+                <PostEvents path="/res_agent/body/reply/data" source="CortexXDR_Audit" />
+            </If>
+        </If>
+        <Else>
+            <Log type="ERROR" message="[CORTEX_DEBUG] Agent API Failed! Status: ${/res_agent/status_code} Body: ${/res_agent/body}" />
+        </Else>
+
+        <CallEndpoint url="https://${/hostname}/public_api/v1/audits/management_logs" method="POST" savePath="/res_mgmt">
+            <RequestHeader name="x-xdr-auth-id" value="${/api_key_id}" />
+            <RequestHeader name="Authorization" value="${/api_key}" />
+            <RequestHeader name="Content-Type" value="application/json" />
+            <RequestBody type="application/json" encoding="UTF-8">${/request_body}</RequestBody>
+        </CallEndpoint>
+
+        <If condition="/res_mgmt/status_code = 200">
+            <Set path="/mgmt_count" value="${count(/res_mgmt/body/reply/data)}" />
+            <Log type="INFO" message="[CORTEX_DEBUG] Mgmt API Success. Found ${/mgmt_count} events." />
+            <If condition="/mgmt_count > 0">
+                <PostEvents path="/res_mgmt/body/reply/data" source="CortexXDR_Audit" />
+            </If>
+           
+            <Set path="/cortex_marker" value="${/safe_end_time}" />
+            <Log type="INFO" message="[CORTEX_DEBUG] Cycle Complete. New Bookmark saved: ${/cortex_marker}" />
+        </If>
+        <Else>
+            <Log type="ERROR" message="[CORTEX_DEBUG] Mgmt API Failed! Status: ${/res_mgmt/status_code} Body: ${/res_mgmt/body}" />
+        </Else>
+
+    </Actions>
+</Workflow>
