@@ -8,7 +8,8 @@ https://docs-cortex.paloaltonetworks.com/r/Cortex-XDR-REST-API/Incident-Manageme
 
 Universal Cloud REST API protocol
 
-https://www.ibm.com/docs/en/qsip/7.4.0?topic=configuration-universal-cloud-rest-api-protocol
+[![IBM Docs](https://img.shields.io/badge/Documentation-Universal%20Cloud%20REST%20API-blue)](https://www.ibm.com/docs/en/qsip/7.4.0?topic=configuration-universal-cloud-rest-api-protocol)
+
 
 
 ## Configuration & Installation Guide
@@ -156,3 +157,16 @@ Permissions: Verify the Cortex XDR API Key is generated with Admin-level.
 Workflow Errors: If test-workflow.sh fails, check the XML line numbers mentioned in the error output for stray characters or missing tags.
 
 
+
+
+--------------------
+**Services Offered**
+
+![API](https://img.shields.io/badge/Protocol-Cloud%20REST%20API-green)
+
+Universal Cloud REST API Workflows: Designing XML workflows to ingest data from any modern cloud service into QRadar.
+
+[![IBM Docs](https://img.shields.io/badge/Documentation-Universal%20Cloud%20REST%20API-blue)](https://www.ibm.com/docs/en/qsip/7.4.0?topic=configuration-universal-cloud-rest-api-protocol)
+
+
+📬 Request a Quotation: >[Click here to get a quote](mailto:mbd.boox@gmail.com)
